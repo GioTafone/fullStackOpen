@@ -1,7 +1,8 @@
 import { useState } from "react";
-import Button from "./components/Button";
 
+import Button from "./components/Button";
 import Header from "./components/Header";
+import Statistics from "./components/Statistics";
 
 const App = () => {
   // save clicks of each button to its own state
@@ -9,14 +10,21 @@ const App = () => {
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
 
+  const total = good + neutral + bad;
+  const average = (good - bad) / total;
+  const postive = good / total;
+
   const addGoodFeedback = () => {
-    setGood(good + 1);
+    const updatedGood = good + 1;
+    setGood(updatedGood);
   };
   const addNeutralFeedback = () => {
-    setNeutral(neutral + 1);
+    const updatedNeutral = neutral + 1;
+    setNeutral(updatedNeutral);
   };
   const addBadFeedback = () => {
-    setBad(bad + 1);
+    const updatedBad = bad + 1;
+    setBad(updatedBad);
   };
 
   return (
@@ -26,9 +34,18 @@ const App = () => {
       <Button text="Neutral" hanldeClick={addNeutralFeedback} />
       <Button text="Bad" hanldeClick={addBadFeedback} />
       <Header text="Statistics" />
-      <p>Good {good}</p>
-      <p>Neutral {neutral}</p>
-      <p>Bad {bad}</p>
+      {total ? (
+        <Statistics
+          good={good}
+          bad={bad}
+          neutral={neutral}
+          total={total}
+          average={average}
+          postive={postive}
+        />
+      ) : (
+        <p>No Feedbacks given</p>
+      )}
     </div>
   );
 };
