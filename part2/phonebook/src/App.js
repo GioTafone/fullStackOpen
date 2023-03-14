@@ -1,7 +1,12 @@
 import { useState } from "react";
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
+  const [persons, setPersons] = useState([
+    { name: "Arto Hellas" },
+    { name: "Diego Maradona" },
+    { name: "Kobe Bryant" },
+    { name: "Roger Federer" },
+  ]);
   const [newName, setNewName] = useState("");
 
   const handlePersonChange = (e) => {
@@ -13,7 +18,16 @@ const App = () => {
     const newPersonsObject = {
       name: newName,
     };
-    setPersons(persons.concat(newPersonsObject));
+    const isNameAlreadyAdded = persons.some(
+      (person) => person.name === newName
+    );
+    if (isNameAlreadyAdded) {
+      alert(`${newName} already added in the Phonebook`);
+      return;
+    }
+    setPersons(
+      isNameAlreadyAdded ? [...persons] : persons.concat(newPersonsObject)
+    );
     setNewName("");
   };
 
