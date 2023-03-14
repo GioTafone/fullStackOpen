@@ -1,6 +1,7 @@
 import React from "react";
 
 import Part from "./Part";
+import Total from "./Total";
 
 const Content = ({ parts }) => {
   return (
@@ -10,6 +11,7 @@ const Content = ({ parts }) => {
           <Part name={part.name} exercise={part.exercises} />
         </div>
       ))}
+      <Total parts={parts} />
     </>
   );
 };
