@@ -46,8 +46,6 @@ const App = () => {
     setSelected(generateRandom());
   };
 
-  console.log(highestVote);
-
   return (
     <div>
       <p>{selectedAnectode}</p>
