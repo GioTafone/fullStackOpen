@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import axios from 'axios'
+import axios from "axios";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import PersonsList from "./components/PersonsList";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -13,19 +14,10 @@ const App = () => {
   const [filterPerson, setFilterPerson] = useState("");
 
   useEffect(() => {
-    console.log("Effect ran")
-    axios
-    .get('http://localhost:3001/persons')
-    .then(response => {
-      console.log('promise fulfilled')
-      setPersons(response.data)
-    })
-  }, [])
-  console.log('render', persons.length, 'persons')
-
-  const searchPerson = persons.filter((person) =>
-    person.name.toLowerCase().startsWith(filterPerson)
-  );
+    axios.get("http://localhost:3001/persons").then((response) => {
+      setPersons(response.data);
+    });
+  }, []);
 
   const handlePersonFilter = (e) => {
     setFilterPerson(e.target.value);
@@ -77,9 +69,7 @@ const App = () => {
         addPerson={addPerson}
       />
       <h2>Numbers</h2>
-      {searchPerson.map((person) => (
-        <Persons key={person.name} name={person.name} number={person.number} />
-      ))}
+      <PersonsList persons={persons} filterPerson={filterPerson} />
     </div>
   );
 };

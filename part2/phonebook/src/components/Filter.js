@@ -1,6 +1,7 @@
 import React from "react";
 
 const Filter = ({ filterPerson, handlePersonFilter }) => {
+
   return (
     <>
       <h2>Filter shown with:</h2>
