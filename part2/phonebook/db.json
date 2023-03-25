@@ -19,18 +19,13 @@
   "persons": [
     {
       "name": "Giuseppe",
-      "number": "111111",
+      "number": "5555",
       "id": 10
     },
     {
-      "name": "Maria",
-      "number": "2222222",
+      "name": "Matia",
+      "number": "4555455",
       "id": 11
-    },
-    {
-      "name": "Luigi",
-      "number": "333333",
-      "id": 12
     }
   ]
 }

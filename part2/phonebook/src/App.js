@@ -36,11 +36,32 @@ const App = () => {
       name: newPerson.name,
       number: newPerson.number,
     };
-    const isNameAlreadyAdded = persons.some(
+    const isNameAlreadyAdded = persons.find(
       (person) => person.name === newPerson.name
     );
     if (isNameAlreadyAdded) {
-      alert(`${newPerson.name} already added in the Phonebook`);
+      if (
+        window.confirm(
+          `${isNameAlreadyAdded.name} is already added to phonebook. Do you want to replace the old number with the new one?`
+        )
+      ) {
+        personService
+          .updatePerson(isNameAlreadyAdded.id, newPersonsObject)
+          .then((returnedPerson) => {
+            console.log(returnedPerson);
+            setPersons(
+              persons.map((person) =>
+                person.id !== isNameAlreadyAdded.id
+                  ? person
+                  : { ...person, number: returnedPerson.number }
+              )
+            );
+          });
+        setNewPerson({
+          name: "",
+          number: "",
+        });
+      }
       return;
     }
     personService.createPerson(newPersonsObject).then((returnedPersons) => {
@@ -56,8 +77,8 @@ const App = () => {
     const person = persons.find((person) => person.id === id);
     if (window.confirm(`Delete ${person.name}`)) {
       personService.deletePerson(person.id);
+      setPersons(persons.filter((person) => person.id !== id));
     }
-    setPersons(persons.filter((person) => person.id !== id));
   };
 
   return (
