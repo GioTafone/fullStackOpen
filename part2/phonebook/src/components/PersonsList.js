@@ -1,7 +1,7 @@
 import React from "react";
 import Persons from "./Persons";
 
-const PersonsList = ({ persons, filterPerson}) => {
+const PersonsList = ({ persons, filterPerson, handleDelete }) => {
   const searchPerson = persons.filter((person) =>
     person.name.toLowerCase().startsWith(filterPerson)
   );
@@ -9,7 +9,12 @@ const PersonsList = ({ persons, filterPerson}) => {
     <div>
       {" "}
       {searchPerson.map((person) => (
-        <Persons key={person.name} name={person.name} number={person.number} />
+        <Persons
+          key={person.id}
+          name={person.name}
+          number={person.number}
+          handleDelete={() => handleDelete(person.id)}
+        />
       ))}
     </div>
   );
