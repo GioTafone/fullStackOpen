@@ -18,16 +18,6 @@
   },
   "persons": [
     {
-      "name": "Luca",
-      "number": "5456",
-      "id": 1
-    },
-    {
-      "name": "Marco",
-      "number": "22222",
-      "id": 2
-    },
-    {
       "name": "Matteo",
       "number": "33333",
       "id": 3

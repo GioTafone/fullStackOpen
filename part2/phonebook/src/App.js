@@ -13,7 +13,7 @@ const App = () => {
     number: "",
   });
   const [filterPerson, setFilterPerson] = useState("");
-  const [popUpSuccess, setpopUpSuccess] = useState(null);
+  const [popUp, setpopUp] = useState(null);
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => setPersons(initialPersons));
@@ -57,12 +57,16 @@ const App = () => {
                   : { ...person, number: returnedPerson.number }
               )
             );
+            setpopUp(`${newPersonsObject.name}'s number was updated`);
           })
           .catch((error) => {
             console.log(`ERROR-------> ${error}`);
-            alert(
-              `Some error occured updating '${isNameAlreadyAdded.name}', please try again`
+            setpopUp(
+              `Some error occured updating '${isNameAlreadyAdded.name}', please try again later`
             );
+            setTimeout(() => {
+              setpopUp(null);
+            }, 5000);
           });
         setNewPerson({
           name: "",
@@ -75,16 +79,19 @@ const App = () => {
       .createPerson(newPersonsObject)
       .then((returnedPersons) => {
         setPersons(persons.concat(returnedPersons));
-        setpopUpSuccess(`'${newPersonsObject.name}' was added`);
+        setpopUp(`'${newPersonsObject.name}' was added`);
         setTimeout(() => {
-          setpopUpSuccess(null);
-        }, 3000);
+          setpopUp(null);
+        }, 5000);
       })
       .catch((error) => {
         console.log(`ERROR-------> ${error}`);
-        alert(
+        setpopUp(
           `Some error occured adding '${newPersonsObject.name}', please try again`
         );
+        setTimeout(() => {
+          setpopUp(null);
+        }, 5000);
       });
     setNewPerson({
       name: "",
@@ -97,8 +104,16 @@ const App = () => {
     if (window.confirm(`Delete ${person.name}`)) {
       personService.deletePerson(person.id).catch((error) => {
         console.log(`ERROR-------> ${error}`);
-        alert(`Some error occured deleting '${person.name}', please try again`);
+        setpopUp(
+          `Some error occured deleting '${person.name}', please try again`
+        );
+        setTimeout(() => {
+          setpopUp(null);
+        }, 5000);
       });
+      setpopUp(
+        `'${person.name}', was deleted`
+      );
       setPersons(persons.filter((person) => person.id !== id));
     }
   };
@@ -106,7 +121,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <PopupSuccessOperation message={popUpSuccess} />
+      <PopupSuccessOperation message={popUp} />
       <Filter
         filterPerson={filterPerson}
         handlePersonFilter={handlePersonFilter}
