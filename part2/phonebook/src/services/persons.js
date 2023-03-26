@@ -8,6 +8,7 @@ const getAll = () => {
 
 const createPerson = (newObject) => {
   const request = axios.post(baseUrl, newObject);
+  
   return request.then((response) => response.data);
 };
 
@@ -25,7 +26,7 @@ const personService = {
   getAll,
   createPerson,
   deletePerson,
-  updatePerson
+  updatePerson,
 };
 
 export default personService;

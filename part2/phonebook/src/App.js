@@ -56,6 +56,12 @@ const App = () => {
                   : { ...person, number: returnedPerson.number }
               )
             );
+          })
+          .catch((error) => {
+            console.log(`ERROR-------> ${error}`);
+            alert(
+              `Some error occured updating '${isNameAlreadyAdded.name}', please try again`
+            );
           });
         setNewPerson({
           name: "",
@@ -64,20 +70,33 @@ const App = () => {
       }
       return;
     }
-    personService.createPerson(newPersonsObject).then((returnedPersons) => {
-      setPersons(persons.concat(returnedPersons));
-      setNewPerson({
-        name: "",
-        number: "",
+    personService
+      .createPerson(newPersonsObject)
+      .then((returnedPersons) => {
+        setPersons(persons.concat(returnedPersons));
+      })
+      .catch((error) => {
+        console.log(`ERROR-------> ${error}`);
+        alert(
+          `Some error occured adding '${newPersonsObject.name}', please try again`
+        );
       });
+    setNewPerson({
+      name: "",
+      number: "",
     });
   };
 
   const removePerson = (id) => {
     const person = persons.find((person) => person.id === id);
     if (window.confirm(`Delete ${person.name}`)) {
-      personService.deletePerson(person.id);
-      setPersons(persons.filter((person) => person.id !== id));
+      personService.deletePerson(person.id).catch((error) => {
+        console.log(`ERROR-------> ${error}`);
+        alert(`Some error occured deleting '${person.name}', please try again`);
+        if (!error) {
+          setPersons(persons.filter((person) => person.id !== id));
+        }
+      });
     }
   };
 
