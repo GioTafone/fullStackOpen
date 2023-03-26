@@ -114,6 +114,9 @@ const App = () => {
       setpopUp(
         `'${person.name}', was deleted`
       );
+      setTimeout(() => {
+        setpopUp(null);
+      }, 5000);
       setPersons(persons.filter((person) => person.id !== id));
     }
   };
