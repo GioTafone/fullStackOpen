@@ -4,6 +4,7 @@ import personService from "./services/persons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import PersonsList from "./components/PersonsList";
+import PopupSuccessOperation from "./components/PopupSuccessOperation";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -12,6 +13,7 @@ const App = () => {
     number: "",
   });
   const [filterPerson, setFilterPerson] = useState("");
+  const [popUpSuccess, setpopUpSuccess] = useState(null);
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => setPersons(initialPersons));
@@ -48,7 +50,6 @@ const App = () => {
         personService
           .updatePerson(isNameAlreadyAdded.id, newPersonsObject)
           .then((returnedPerson) => {
-            console.log(returnedPerson);
             setPersons(
               persons.map((person) =>
                 person.id !== isNameAlreadyAdded.id
@@ -74,6 +75,10 @@ const App = () => {
       .createPerson(newPersonsObject)
       .then((returnedPersons) => {
         setPersons(persons.concat(returnedPersons));
+        setpopUpSuccess(`'${newPersonsObject.name}' was added`);
+        setTimeout(() => {
+          setpopUpSuccess(null);
+        }, 3000);
       })
       .catch((error) => {
         console.log(`ERROR-------> ${error}`);
@@ -93,16 +98,15 @@ const App = () => {
       personService.deletePerson(person.id).catch((error) => {
         console.log(`ERROR-------> ${error}`);
         alert(`Some error occured deleting '${person.name}', please try again`);
-        if (!error) {
-          setPersons(persons.filter((person) => person.id !== id));
-        }
       });
+      setPersons(persons.filter((person) => person.id !== id));
     }
   };
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+      <PopupSuccessOperation message={popUpSuccess} />
       <Filter
         filterPerson={filterPerson}
         handlePersonFilter={handlePersonFilter}
