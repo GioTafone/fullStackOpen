@@ -61,7 +61,7 @@ function App() {
     <div>
       <h1>Country Info</h1>
       <label>
-        Search for a country:
+        Search country:
         <input type="text" value={searchTerm} onChange={handleSearchTermChange} />
       </label>
       {errorMessage && <p>{errorMessage}</p>}
