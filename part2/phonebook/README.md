@@ -9,6 +9,12 @@
 ### exercise 2.16 - 2.17
 [Exercises Description](https://fullstackopen.com/en/part2/adding_styles_to_react_app#exercises-2-16-2-17)
 
+### exercise 3.9 - 3.11
+[Exercises Description](https://fullstackopen.com/en/part3/deploying_app_to_internet#exercises-3-9-3-11)
+
+
+
+[Live App](https://spring-pine-2324.fly.dev/)
 
 
 > Initialise
