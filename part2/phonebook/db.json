@@ -18,14 +18,9 @@
   },
   "persons": [
     {
-      "name": "Matteo",
-      "number": "33333",
-      "id": 3
-    },
-    {
-      "name": "Heidi",
-      "number": "556656",
-      "id": 5
+      "name": "Giovanni",
+      "number": "4545456",
+      "id": 1
     }
   ]
 }

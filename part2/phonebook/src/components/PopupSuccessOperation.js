@@ -32,6 +32,7 @@ const PopupSuccessOperation = ({ message }) => {
       </div>
     );
   }
+  
   return (
     <div style={successStyle} className="error">
       {message}
