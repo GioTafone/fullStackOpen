@@ -12,7 +12,7 @@ const PersonsList = ({ persons, filterPerson, handleDelete }) => {
         <Persons
           key={person.id}
           name={person.name}
-          number={person.number}
+          phoneNumber={person.phoneNumber}
           handleDelete={() => handleDelete(person.id)}
         />
       ))}

@@ -10,7 +10,7 @@ const App = () => {
   const [persons, setPersons] = useState([]);
   const [newPerson, setNewPerson] = useState({
     name: "",
-    number: "",
+    phoneNumber: "",
   });
   const [filterPerson, setFilterPerson] = useState("");
   const [popUp, setpopUp] = useState(null);
@@ -36,7 +36,7 @@ const App = () => {
     e.preventDefault();
     const newPersonsObject = {
       name: newPerson.name,
-      number: newPerson.number,
+      phoneNumber: newPerson.phoneNumber,
     };
     const isNameAlreadyAdded = persons.find(
       (person) => person.name === newPerson.name
@@ -54,7 +54,7 @@ const App = () => {
               persons.map((person) =>
                 person.id !== isNameAlreadyAdded.id
                   ? person
-                  : { ...person, number: returnedPerson.number }
+                  : { ...person, phoneNumber: returnedPerson.phoneNumber }
               )
             );
             setpopUp(`${newPersonsObject.name}'s number was updated`);
@@ -70,7 +70,7 @@ const App = () => {
           });
         setNewPerson({
           name: "",
-          number: "",
+          phoneNumber: "",
         });
       }
       return;
@@ -95,7 +95,7 @@ const App = () => {
       });
     setNewPerson({
       name: "",
-      number: "",
+      phoneNumber: "",
     });
   };
 
@@ -132,7 +132,7 @@ const App = () => {
       <h3>Add a new Contact</h3>
       <PersonForm
         name={newPerson.name}
-        number={newPerson.number}
+        phoneNumber={newPerson.phoneNumber}
         handlePersonChange={handlePersonChange}
         addPerson={addPerson}
       />
