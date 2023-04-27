@@ -85,9 +85,9 @@ const App = () => {
         }, 5000);
       })
       .catch((error) => {
-        console.log(`ERROR-------> ${error}`);
+        console.log(`ERROR-------> ${error.response.data.error}`);
         setpopUp(
-          `Some error occured adding '${newPersonsObject.name}', please try again`
+          `Some error occured. ${error.response.data.error}`
         );
         setTimeout(() => {
           setpopUp(null);
