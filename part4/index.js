@@ -1,44 +1,59 @@
-const express = require('express')
-const app = express()
-const cors = require('cors')
+const express = require("express");
+const app = express();
+const cors = require("cors");
 require("dotenv").config();
-const mongoose = require('mongoose')
+const morgan = require("morgan");
 
-const blogSchema = new mongoose.Schema({
-  title: String,
-  author: String,
-  url: String,
-  likes: Number
-})
+const Blog = require("./models/blog");
 
-const Blog = mongoose.model('Blog', blogSchema)
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
 
-const mongoUrl = 'mongodb://localhost/bloglist'
-const url = `mongodb+srv://giovannitafone:<password>@cluster0.7rx7nqk.mongodb.net/?retryWrites=true&w=majority`
-mongoose.connect(mongoUrl)
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    return response.status(400).json({ error: error.message });
+  }
 
-app.use(cors())
-app.use(express.json())
+  next(error);
+};
 
-app.get('/api/blogs', (request, response) => {
-  Blog
-    .find({})
-    .then(blogs => {
-      response.json(blogs)
-    })
-})
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
+};
 
-app.post('/api/blogs', (request, response) => {
-  const blog = new Blog(request.body)
+app.use(cors());
+app.use(express.json());
+app.use(express.static("build"));
 
-  blog
-    .save()
-    .then(result => {
-      response.status(201).json(result)
-    })
-})
+morgan.token("req-body", (req) => {
+  return JSON.stringify(req.body);
+});
 
-const PORT = 3003
+app.use(
+  morgan(
+    ":method :url :status :res[content-length] - :response-time ms :req-body"
+  )
+);
+
+app.get("/api/blogs", (request, response) => {
+  Blog.find({}).then((blogs) => {
+    response.json(blogs);
+  });
+});
+
+app.post("/api/blogs", (request, response) => {
+  const blog = new Blog(request.body);
+
+  blog.save().then((result) => {
+    response.status(201).json(result);
+  });
+});
+
+app.use(unknownEndpoint);
+app.use(errorHandler);
+
+const PORT = process.env.PORT || 3003;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+  console.log(`Server running on port ${PORT}`);
+});
