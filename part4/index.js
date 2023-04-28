@@ -4,7 +4,7 @@ const cors = require("cors");
 require("dotenv").config();
 const morgan = require("morgan");
 
-const Blog = require("./models/blog");
+const blogsRouter = require('./controllers/blogs')
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message);
@@ -36,19 +36,7 @@ app.use(
   )
 );
 
-app.get("/api/blogs", (request, response) => {
-  Blog.find({}).then((blogs) => {
-    response.json(blogs);
-  });
-});
-
-app.post("/api/blogs", (request, response) => {
-  const blog = new Blog(request.body);
-
-  blog.save().then((result) => {
-    response.status(201).json(result);
-  });
-});
+app.use('/api/blogs', blogsRouter)
 
 app.use(unknownEndpoint);
 app.use(errorHandler);
