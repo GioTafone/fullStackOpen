@@ -17,10 +17,7 @@
 [Live App](https://spring-pine-2324.fly.dev/)
 
 
-> Initialise
-
     npm install
 
-> Run
 
     npm start
