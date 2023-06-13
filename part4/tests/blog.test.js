@@ -39,3 +39,32 @@ describe('GET /api/blogs', () => {
     expect(response.body._id).toBeUndefined();
   });
 });
+
+describe('POST /api/blogs', () => {
+    beforeEach(async () => {
+      await Blog.deleteMany({}); // Clear the database before each test
+    });
+  
+    test('creates a new blog post and increases the total number of blogs by one', async () => {
+      const newBlog = {
+        title: 'Test Blog',
+        author: 'Test Author',
+        url: 'http://testblog.com',
+        likes: 10,
+      };
+  
+      const response = await api.post('/api/blogs').send(newBlog).expect(201);
+  
+      expect(response.body.title).toBe(newBlog.title);
+      expect(response.body.author).toBe(newBlog.author);
+      expect(response.body.url).toBe(newBlog.url);
+      expect(response.body.likes).toBe(newBlog.likes);
+  
+      const blogs = await Blog.find({});
+      expect(blogs).toHaveLength(1);
+      expect(blogs[0].title).toBe(newBlog.title);
+      expect(blogs[0].author).toBe(newBlog.author);
+      expect(blogs[0].url).toBe(newBlog.url);
+      expect(blogs[0].likes).toBe(newBlog.likes);
+    });
+  });
