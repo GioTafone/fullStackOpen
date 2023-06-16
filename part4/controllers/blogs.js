@@ -7,7 +7,17 @@ blogsRouter.get('/', async (request, response) => {
 });
 
 blogsRouter.post('/', async (request, response) => {
-  const blog = new Blog(request.body);
+  const { title, author, url, likes } = request.body;
+
+  if (!title) {
+    return response.status(400).json({ error: 'Title is missing' });
+  }
+
+  if (!url) {
+    return response.status(400).json({ error: 'URL is missing' });
+  }
+
+  const blog = new Blog({ title, author, url, likes: likes || 0 });
   const savedBlog = await blog.save();
   response.status(201).json(savedBlog);
 });

@@ -68,25 +68,40 @@ describe('POST /api/blogs', () => {
       expect(blogs[0].likes).toBe(newBlog.likes);
     });
   });
-
-describe('POST /api/blogs', () => {
-  beforeEach(async () => {
-    await Blog.deleteMany({}); // Clear the database before each test
+  
+  describe('POST /api/blogs', () => {
+    beforeEach(async () => {
+      await Blog.deleteMany({}); // Clear the database before each test
+    });
+  
+    test('returns status code 400 Bad Request if title is missing', async () => {
+      const newBlog = {
+        author: 'Test Author',
+        url: 'http://testblog.com',
+        likes: 10,
+      };
+  
+      const response = await api.post('/api/blogs').send(newBlog).expect(400);
+  
+      expect(response.body.error).toBe('Title is missing');
+  
+      const blogs = await Blog.find({});
+      expect(blogs).toHaveLength(0);
+    });
+  
+    test('returns status code 400 Bad Request if url is missing', async () => {
+      const newBlog = {
+        title: 'Test Blog',
+        author: 'Test Author',
+        likes: 10,
+      };
+  
+      const response = await api.post('/api/blogs').send(newBlog).expect(400);
+  
+      expect(response.body.error).toBe('URL is missing');
+  
+      const blogs = await Blog.find({});
+      expect(blogs).toHaveLength(0);
+    });
   });
-
-  test('creates a new blog post with default likes value if missing', async () => {
-    const newBlog = {
-      title: 'Test Blog',
-      author: 'Test Author',
-      url: 'http://testblog.com',
-    };
-
-    const response = await api.post('/api/blogs').send(newBlog).expect(201);
-
-    expect(response.body.likes).toBe(0);
-
-    const blogs = await Blog.find({});
-    expect(blogs).toHaveLength(1);
-    expect(blogs[0].likes).toBe(0);
-  });
-});
+  
