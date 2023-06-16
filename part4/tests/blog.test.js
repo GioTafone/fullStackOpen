@@ -68,3 +68,25 @@ describe('POST /api/blogs', () => {
       expect(blogs[0].likes).toBe(newBlog.likes);
     });
   });
+
+describe('POST /api/blogs', () => {
+  beforeEach(async () => {
+    await Blog.deleteMany({}); // Clear the database before each test
+  });
+
+  test('creates a new blog post with default likes value if missing', async () => {
+    const newBlog = {
+      title: 'Test Blog',
+      author: 'Test Author',
+      url: 'http://testblog.com',
+    };
+
+    const response = await api.post('/api/blogs').send(newBlog).expect(201);
+
+    expect(response.body.likes).toBe(0);
+
+    const blogs = await Blog.find({});
+    expect(blogs).toHaveLength(1);
+    expect(blogs[0].likes).toBe(0);
+  });
+});
