@@ -104,4 +104,31 @@ describe('POST /api/blogs', () => {
       expect(blogs).toHaveLength(0);
     });
   });
+
+  describe('DELETE /api/blogs/:id', () => {
+    test('deletes a blog post with a valid id', async () => {
+      const blogsAtStart = await helper.blogsInDb();
+      const blogToDelete = blogsAtStart[0];
+  
+      await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+  
+      const blogsAtEnd = await helper.blogsInDb();
+      expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
+  
+      const ids = blogsAtEnd.map((blog) => blog.id);
+      expect(ids).not.toContain(blogToDelete.id);
+    });
+  
+    test('returns status code 404 if the id does not exist', async () => {
+      const nonExistingId = await helper.nonExistingId();
+  
+      await api.delete(`/api/blogs/${nonExistingId}`).expect(404);
+    });
+  
+    test('returns status code 400 if the id is invalid', async () => {
+      const invalidId = 'invalid-id';
+  
+      await api.delete(`/api/blogs/${invalidId}`).expect(400);
+    });
+  });
   
