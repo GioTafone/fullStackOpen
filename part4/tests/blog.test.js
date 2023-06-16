@@ -131,4 +131,41 @@ describe('POST /api/blogs', () => {
       await api.delete(`/api/blogs/${invalidId}`).expect(400);
     });
   });
+
+  describe('PUT /api/blogs/:id', () => {
+    test('updates the likes of a blog post with a valid id', async () => {
+      const blogsAtStart = await helper.blogsInDb();
+      const blogToUpdate = blogsAtStart[0];
+  
+      const updatedBlog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 };
+  
+      const response = await api
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .send(updatedBlog)
+        .expect(200);
+  
+      expect(response.body.likes).toBe(blogToUpdate.likes + 1);
+  
+      const blogsAtEnd = await helper.blogsInDb();
+      expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
+  
+      const updatedBlogInDb = blogsAtEnd.find((blog) => blog.id === blogToUpdate.id);
+      expect(updatedBlogInDb.likes).toBe(blogToUpdate.likes + 1);
+    });
+  
+    test('returns status code 404 if the id does not exist', async () => {
+      const nonExistingId = await helper.nonExistingId();
+  
+      await api
+        .put(`/api/blogs/${nonExistingId}`)
+        .send({ likes: 10 })
+        .expect(404);
+    });
+  
+    test('returns status code 400 if the id is invalid', async () => {
+      const invalidId = 'invalid-id';
+  
+      await api.put(`/api/blogs/${invalidId}`).send({ likes: 5 }).expect(400);
+    });
+  });
   
